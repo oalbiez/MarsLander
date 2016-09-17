@@ -17,11 +17,4 @@ public class Utils {
 
     public static final DecimalFormat FMT_0_DEC = new DecimalFormat("#0");
 
-    public static final Double precision = new Double(0.001d);
-
-
-    public static final boolean areEquals(Double v1, Double v2) {
-        return Math.abs(v1 - v2)  < precision;
-    }
-
 }

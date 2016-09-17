@@ -24,20 +24,17 @@ public class GameEngine {
 
     public Shuttle computeNextState(final Surface surface, final Shuttle shuttle, ControlPanel newControl ) {
 
-        Shuttle nextShuttle = shuttle.duplicate();
+        if ( shuttle.status == Status.CRASHED ) return shuttle;
 
+        Shuttle nextShuttle = shuttle.duplicate();
         final ControlPanel nextControl = this.physicEngine.computeControl(nextShuttle, newControl);
         nextShuttle.control = nextControl;
-
         final FuelTank nextRemainingFuel = this.physicEngine.computeFuel(nextShuttle);
         nextShuttle.fuel = nextRemainingFuel;
-
         final Position nextPosition = this.physicEngine.computePosition(nextShuttle);
         nextShuttle.position = nextPosition;
-
         final Speed nextSpeed = this.physicEngine.computeSpeed(nextShuttle);
         nextShuttle.speed = nextSpeed;
-
         final Status nextStatus = this.physicEngine.computeStatus(nextShuttle, surface);
         nextShuttle.status = nextStatus;
 

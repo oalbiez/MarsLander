@@ -9,14 +9,14 @@ package com.althome.landersimulator.entities;
  *
  * @author Arnaud
  */
-public class Surface {
+public interface Surface {
+
+    void build(int[] compactedLandX, int[] compactedLandY);
     
-    public boolean isAFreePosition(final Position position) {
-        return true;
-    }
+    boolean isAFreePosition(final Position position);
     
-    public boolean isOnTheLandingZone(final Position position) {
-        return true;
-    }
-    
+    boolean isOnTheLandingZone(final Position position);
+
+    String toString();
+
 }
