@@ -79,7 +79,7 @@ public class BitMatrixSurface implements Surface {
 
     @Override
     public boolean isOnTheLandingZone(Position position) {
-        return false;
+        return position.x > this.flatZoneXmin && position.x < this.flatZoneXmax;
     }
 
     @Override
