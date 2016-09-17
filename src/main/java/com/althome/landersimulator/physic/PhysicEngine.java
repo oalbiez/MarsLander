@@ -19,18 +19,18 @@ import com.althome.landersimulator.entities.FuelTank;
  */
 public class PhysicEngine {
     
-    /* Gravity in m/s² */
-    private static final double GRAVITY = -3.711;
-    
-    /* Landing, physical constraints */
-    private static final double VSPEED_LAND_MAX = 40;
-    private static final double HSPEED_LAND_MAX = 20;
-    private static final int TILT_LAND_MAX = 0;
+    private final PhysicProperties physicProperties = new PhysicProperties();
 
-    /*  */
-    
-    
-    public static Status computeStatus(final Shuttle shuttle, final Surface surface) {       
+    private final LandingConstraints landCstr = new LandingConstraints();
+
+    private final ControlsConstraints controlsCstr = new ControlsConstraints();
+
+
+    public PhysicEngine() {
+
+    }
+
+    public Status computeStatus(final Shuttle shuttle, final Surface surface) {
         if ( isInAFreeArea(surface, shuttle) ) {
             return Status.FLYING;
         } else if ( isOnTheLandingZone(surface, shuttle) && respectLandingConstraints(shuttle) ) {
@@ -40,46 +40,55 @@ public class PhysicEngine {
         }
     }
     
-    public static ControlPanel computeControl(Shuttle shuttle) {
-        if ( shuttle.fuel.remaining >= shuttle.control.thruster ) {
-            return new ControlPanel(shuttle.control.thruster, shuttle.control.tilt);
-        } else {
-            return new ControlPanel(0, shuttle.control.tilt);
+    public ControlPanel computeControl(final Shuttle shuttle, final ControlPanel newInputControl) {
+        ControlPanel nextControl = shuttle.control.duplicate();
+        if ( newInputControl.thruster > shuttle.control.thruster ) { // increase
+            nextControl.thruster = Math.min(newInputControl.thruster, controlsCstr.getThrusterMax());
+            nextControl.thruster = Math.min(nextControl.thruster, shuttle.control.thruster + controlsCstr.getThrusterStepMax());
+        } else if ( newInputControl.thruster < shuttle.control.thruster ) { // decrease
+            nextControl.thruster = Math.max(newInputControl.thruster, controlsCstr.getThrusterMin());
+            nextControl.thruster = Math.max(nextControl.thruster, shuttle.control.thruster - controlsCstr.getThrusterStepMax());
         }
+        if ( newInputControl.tilt > shuttle.control.tilt ) { // increase
+            nextControl.tilt = Math.min(newInputControl.tilt, controlsCstr.getTiltMax());
+            nextControl.tilt = Math.min(nextControl.tilt, shuttle.control.tilt + controlsCstr.getTiltStepMax());
+        } else if ( newInputControl.tilt < shuttle.control.tilt ) { // decrease
+            nextControl.tilt = Math.max(newInputControl.tilt, controlsCstr.getTiltMin());
+            nextControl.tilt = Math.max(nextControl.tilt, shuttle.control.tilt - controlsCstr.getTiltStepMax());
+        }
+        return nextControl;
     }
     
-    public static FuelTank computeFuel(final Shuttle shuttle) {
+    public FuelTank computeFuel(final Shuttle shuttle) {
         return new FuelTank(shuttle.fuel.remaining - shuttle.control.thruster);
     }
     
-    public static Speed computeSpeed(final Shuttle shuttle) {
+    public Speed computeSpeed(final Shuttle shuttle) {
         return new Speed(
                 shuttle.speed.hSpeed - 1 * Math.sin(Math.toRadians(shuttle.control.tilt)) * shuttle.control.thruster,
-                shuttle.speed.vSpeed + 1 * Math.cos(Math.toRadians(shuttle.control.tilt)) * shuttle.control.thruster + GRAVITY
+                shuttle.speed.vSpeed + 1 * Math.cos(Math.toRadians(shuttle.control.tilt)) * shuttle.control.thruster + physicProperties.getGravity()
                );
     }
     
-    public static Position computePosition(final Shuttle shuttle) {
+    public Position computePosition(final Shuttle shuttle) {
         return new Position(
                 shuttle.position.x + shuttle.speed.hSpeed - 0.5 * (Math.sin(Math.toRadians(shuttle.control.tilt)) * shuttle.control.thruster),
-                shuttle.position.y + shuttle.speed.vSpeed + 0.5 * (Math.cos(Math.toRadians(shuttle.control.tilt)) * shuttle.control.thruster + GRAVITY)
+                shuttle.position.y + shuttle.speed.vSpeed + 0.5 * (Math.cos(Math.toRadians(shuttle.control.tilt)) * shuttle.control.thruster + physicProperties.getGravity())
                );
     }
 
-    private static boolean respectLandingConstraints(final Shuttle shuttle) {
-        return Math.abs(shuttle.control.tilt) <= TILT_LAND_MAX
-                && Math.abs(shuttle.speed.vSpeed) <= VSPEED_LAND_MAX
-                && Math.abs(shuttle.speed.hSpeed) <= HSPEED_LAND_MAX;
+    private boolean respectLandingConstraints(final Shuttle shuttle) {
+        return Math.abs(shuttle.control.tilt) <= landCstr.getTiltLandMax()
+                && Math.abs(shuttle.speed.vSpeed) <= landCstr.getvSpeedLandMax()
+                && Math.abs(shuttle.speed.hSpeed) <= landCstr.gethSpeedLandMax();
     }
     
-    public static boolean isInAFreeArea(final Surface surface, final Shuttle shuttle) {
-        if ( surface.isAFreePosition(shuttle.position) ) return true;
-        else return false;
+    private boolean isInAFreeArea(final Surface surface, final Shuttle shuttle) {
+        return ( surface.isAFreePosition(shuttle.position) );
     }
 
-    public static boolean isOnTheLandingZone(final Surface surface, final Shuttle shuttle) {
-        if ( surface.isOnTheLandingZone(shuttle.position) ) return true;
-        else return false;
+    private boolean isOnTheLandingZone(final Surface surface, final Shuttle shuttle) {
+        return ( surface.isOnTheLandingZone(shuttle.position) );
     }
 
     

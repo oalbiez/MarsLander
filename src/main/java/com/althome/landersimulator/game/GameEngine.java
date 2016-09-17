@@ -6,9 +6,8 @@
 package com.althome.landersimulator.game;
 
 import com.althome.landersimulator.entities.*;
+import com.althome.landersimulator.physic.PhysicEngine;
 
-
-import static com.althome.landersimulator.physic.PhysicEngine.*;
 
 /**
  *
@@ -16,16 +15,32 @@ import static com.althome.landersimulator.physic.PhysicEngine.*;
  */
 public class GameEngine {
     
-    
-    public static Shuttle computeNextState(final Surface surface, final Shuttle shuttle, ControlPanel newControl ) {
-        
-        final ControlPanel nextControl = computeControl(shuttle);
-        final FuelTank nextRemainingFuel = computeFuel(shuttle);
-        final Position nextPosition = computePosition(shuttle);
-        final Speed nextSpeed = computeSpeed(shuttle);
-        final Status nextStatus = computeStatus(shuttle, surface);
-        
-        final Shuttle nextShuttle = new Shuttle(nextPosition, nextSpeed, nextControl, nextRemainingFuel, nextStatus);
+    private final PhysicEngine physicEngine;
+
+
+    public GameEngine() {
+        this.physicEngine = new PhysicEngine();
+    }
+
+    public Shuttle computeNextState(final Surface surface, final Shuttle shuttle, ControlPanel newControl ) {
+
+        Shuttle nextShuttle = shuttle.duplicate();
+
+        final ControlPanel nextControl = this.physicEngine.computeControl(nextShuttle, newControl);
+        nextShuttle.control = nextControl;
+
+        final FuelTank nextRemainingFuel = this.physicEngine.computeFuel(nextShuttle);
+        nextShuttle.fuel = nextRemainingFuel;
+
+        final Position nextPosition = this.physicEngine.computePosition(nextShuttle);
+        nextShuttle.position = nextPosition;
+
+        final Speed nextSpeed = this.physicEngine.computeSpeed(nextShuttle);
+        nextShuttle.speed = nextSpeed;
+
+        final Status nextStatus = this.physicEngine.computeStatus(nextShuttle, surface);
+        nextShuttle.status = nextStatus;
+
         return nextShuttle;
     }
     

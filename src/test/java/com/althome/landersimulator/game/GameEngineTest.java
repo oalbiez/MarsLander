@@ -1,16 +1,26 @@
 package com.althome.landersimulator.game;
 
 import com.althome.landersimulator.entities.*;
-import com.althome.landersimulator.utils.Utils;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-import static com.althome.landersimulator.game.GameEngine.*;
 
 /**
  * Created by Arnaud on 13/09/2016.
  */
 public class GameEngineTest {
+
+    private GameEngine buildStandardGameEngine() {
+        return new GameEngine();
+    }
+
+    private ControlPanel buildControlZero() {
+        return new ControlPanel(0,0);
+    }
+
+    private ControlPanel buildControl() {
+        return new ControlPanel(3, 25);
+    }
 
     private Shuttle buildInitialShip_01() {
         ControlPanel control = new ControlPanel(0,0);
@@ -35,15 +45,16 @@ public class GameEngineTest {
     }
 
     @Test
-    public void computeNextState_01() {
+    public void computeNextState_freeFall_01() {
 
+        final GameEngine engine = buildStandardGameEngine();
         final Surface ground = buildSurface();
+        final ControlPanel ctrl = buildControlZero();
         final Shuttle ship1 = buildInitialShip_01();
-        final Shuttle ship2 = computeNextState(ship1, ground);
-        final Shuttle ship3 = computeNextState(ship2, ground);
-        final Shuttle ship4 = computeNextState(ship3, ground);
-        final Shuttle ship5 = computeNextState(ship4, ground);
-
+        final Shuttle ship2 = engine.computeNextState(ground, ship1, ctrl);
+        final Shuttle ship3 = engine.computeNextState(ground, ship2, ctrl);
+        final Shuttle ship4 = engine.computeNextState(ground, ship3, ctrl);
+        final Shuttle ship5 = engine.computeNextState(ground, ship4, ctrl);
 
         assertEquals(ship5.position.x, 2500, 0.5);
         assertEquals(ship5.position.y, 2670, 0.5);
@@ -53,14 +64,35 @@ public class GameEngineTest {
     }
 
     @Test
-    public void computeNextState_02() {
+    public void computeNextState_FixedthrustAndTilt_01() {
 
+        final GameEngine engine = buildStandardGameEngine();
         final Surface ground = buildSurface();
+        final ControlPanel ctrl = buildControl();
+        final Shuttle ship1 = buildInitialShip_01();
+        final Shuttle ship2 = engine.computeNextState(ground, ship1, ctrl);
+        final Shuttle ship3 = engine.computeNextState(ground, ship2, ctrl);
+        final Shuttle ship4 = engine.computeNextState(ground, ship3, ctrl);
+        final Shuttle ship5 = engine.computeNextState(ground, ship4, ctrl);
+
+        assertEquals(ship5.position.x, 2494, 0.5);
+        assertEquals(ship5.position.y, 2684, 0.5);
+
+        assertEquals(ship5.speed.hSpeed, -4, 0.5);
+        assertEquals(ship5.speed.vSpeed, -7, 0.5);
+    }
+
+    @Test
+    public void computeNextState_freeFall_02() {
+
+        final GameEngine engine = buildStandardGameEngine();
+        final Surface ground = buildSurface();
+        final ControlPanel ctrl = buildControlZero();
         final Shuttle ship1 = buildInitialShip_02();
-        final Shuttle ship2 = computeNextState(ship1, ground);
-        final Shuttle ship3 = computeNextState(ship2, ground);
-        final Shuttle ship4 = computeNextState(ship3, ground);
-        final Shuttle ship5 = computeNextState(ship4, ground);
+        final Shuttle ship2 = engine.computeNextState(ground, ship1, ctrl);
+        final Shuttle ship3 = engine.computeNextState(ground, ship2, ctrl);
+        final Shuttle ship4 = engine.computeNextState(ground, ship3, ctrl);
+        final Shuttle ship5 = engine.computeNextState(ground, ship4, ctrl);
 
         assertEquals(ship5.position.x, 6100, 0.5);
         assertEquals(ship5.position.y, 2770, 0.5);
