@@ -1,4 +1,6 @@
-package com.althome.landersimulator.entities;
+package com.althome.landersimulator.entities.surface;
+
+import com.althome.landersimulator.entities.shuttle.Position;
 
 import java.util.BitSet;
 
@@ -65,11 +67,12 @@ public class BitMatrixSurface implements Surface {
                 this.flatZoneXmin = compactedLandX[i-1];
                 this.flatZoneXmax = compactedLandX[i];
                 this.flatZoneY = compactedLandY[i];
+                this.flatZoneXmid = ( this.flatZoneXmin + this.flatZoneXmax ) / 2;
                 break;
             }
             prevY = compactedLandY[i];
         }
-        this.flatZoneXmid = ( this.flatZoneXmin + this.flatZoneXmax ) / 2;
+
     }
 
     @Override
@@ -95,16 +98,4 @@ public class BitMatrixSurface implements Surface {
         return dots.toString();
     }
 
-    /*
-    private int indexOf(int x, int y) {
-        return xLength * y + x;
-    }
-
-    private int xOf(int index) {
-        return index - ( index / xLength ) * xLength;
-    }
-
-    private int yOf(int index) {
-        return index / xLength;
-    }*/
 }

@@ -5,13 +5,14 @@
  */
 package com.althome.landersimulator.physic;
 
-import com.althome.landersimulator.entities.ControlPanel;
-import com.althome.landersimulator.entities.Surface;
-import com.althome.landersimulator.entities.Speed;
-import com.althome.landersimulator.entities.Position;
-import com.althome.landersimulator.entities.Shuttle;
-import com.althome.landersimulator.entities.Status;
-import com.althome.landersimulator.entities.FuelTank;
+import com.althome.landersimulator.input.DesiredControls;
+import com.althome.landersimulator.entities.shuttle.ControlPanel;
+import com.althome.landersimulator.entities.surface.Surface;
+import com.althome.landersimulator.entities.shuttle.Speed;
+import com.althome.landersimulator.entities.shuttle.Position;
+import com.althome.landersimulator.entities.shuttle.Shuttle;
+import com.althome.landersimulator.entities.shuttle.Status;
+import com.althome.landersimulator.entities.shuttle.FuelTank;
 
 /**
  *
@@ -19,15 +20,23 @@ import com.althome.landersimulator.entities.FuelTank;
  */
 public class PhysicEngine {
     
-    private final PhysicProperties physicProperties = new PhysicProperties();
+    private final PhysicProperties physicProperties;
 
-    private final LandingConstraints landCstr = new LandingConstraints();
+    private final LandingConstraints landCstr;
 
-    private final ControlsConstraints controlsCstr = new ControlsConstraints();
+    private final ControlsConstraints controlsCstr;
 
 
     public PhysicEngine() {
+        this.physicProperties = new PhysicProperties();
+        this.landCstr = new LandingConstraints();
+        this.controlsCstr = new ControlsConstraints();
+    }
 
+    public PhysicEngine(final PhysicProperties physicProperties, final LandingConstraints landCstr, final ControlsConstraints controlsCstr) {
+        this.physicProperties = physicProperties;
+        this.landCstr = landCstr;
+        this.controlsCstr = controlsCstr;
     }
 
     public Status computeStatus(final Shuttle shuttle, final Surface surface) {
@@ -40,7 +49,7 @@ public class PhysicEngine {
         }
     }
     
-    public ControlPanel computeControl(final Shuttle shuttle, final ControlPanel newInputControl) {
+    public ControlPanel computeControl(final Shuttle shuttle, final DesiredControls newInputControl) {
         ControlPanel nextControl = shuttle.control.duplicate();
         if ( newInputControl.thruster > shuttle.control.thruster ) { // increase
             nextControl.thruster = Math.min(newInputControl.thruster, controlsCstr.getThrusterMax());

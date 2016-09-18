@@ -3,7 +3,7 @@ package com.althome.landersimulator.physic;
 /**
  * Created by Arnaud on 17/09/2016.
  */
-class ControlsConstraints {
+public class ControlsConstraints {
 
     /* Shuttle controls constraints */
     private final int thrusterStepMax;
@@ -14,7 +14,7 @@ class ControlsConstraints {
     private final int thrusterMin;
 
 
-    ControlsConstraints() {
+    public ControlsConstraints() {
         this.thrusterStepMax = 1;
         this.tiltStepMax = 15;
         this.tiltMax = 90;
@@ -32,27 +32,27 @@ class ControlsConstraints {
         this.thrusterMin = thrusterMin;
     }
 
-    int getThrusterStepMax() {
+    public int getThrusterStepMax() {
         return thrusterStepMax;
     }
 
-    int getTiltStepMax() {
+    public int getTiltStepMax() {
         return tiltStepMax;
     }
 
-    int getTiltMax() {
+    public int getTiltMax() {
         return tiltMax;
     }
 
-    int getTiltMin() {
+    public int getTiltMin() {
         return tiltMin;
     }
 
-    int getThrusterMax() {
+    public int getThrusterMax() {
         return thrusterMax;
     }
 
-    int getThrusterMin() {
+    public int getThrusterMin() {
         return thrusterMin;
     }
 }

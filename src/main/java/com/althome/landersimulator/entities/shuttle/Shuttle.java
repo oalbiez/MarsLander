@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.althome.landersimulator.entities;
+package com.althome.landersimulator.entities.shuttle;
 
 import static com.althome.landersimulator.utils.Utils.FMT_0_DEC;
 
