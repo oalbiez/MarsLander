@@ -201,4 +201,20 @@ public class GameEngineTest {
         assertEquals(ship11.fuel.remaining, 524);
     }
 
+    @Test
+    public void hi() {
+        final GameEngine engine = buildStandardGameEngine();
+        final Surface ground = buildSurface_02();
+        final Shuttle ship1 = buildInitialShip_02();
+
+        final DesiredControls ctrl = buildControlZero();
+        final DesiredControlsSequence seq = new DesiredControlsSequence();
+        seq.fillWith(100, ctrl);
+
+        Shuttle ship2 = engine.computeFinalState(ground, ship1, seq);
+
+        System.out.println(ship2);
+
+    }
+
 }

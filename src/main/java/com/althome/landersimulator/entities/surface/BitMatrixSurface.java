@@ -75,13 +75,17 @@ public class BitMatrixSurface implements Surface {
 
     }
 
-    @Override
-    public boolean isAFreePosition(Position position) {
-        return ! this.map[(int)position.x].get((int)position.y);
+    private boolean isOutOfRange(final Position position) {
+        return ( position.x >= xLength || position.x < 0 || position.y >= yLength || position.y < 0 );
     }
 
     @Override
-    public boolean isOnTheLandingZone(Position position) {
+    public boolean isAFreePosition(final Position position) {
+        return ! (isOutOfRange(position)) && ! (this.map[(int)position.x].get((int)position.y));
+    }
+
+    @Override
+    public boolean isOnTheLandingZone(final Position position) {
         return position.x > this.flatZoneXmin && position.x < this.flatZoneXmax;
     }
 
