@@ -32,16 +32,12 @@ public class GameEngine {
         if ( shuttle.status == Status.CRASHED ) return shuttle;
 
         Shuttle nextShuttle = shuttle.duplicate();
-        final ControlPanel nextControl = this.physicEngine.computeControl(nextShuttle, desiredControls);
-        nextShuttle.control = nextControl;
-        final FuelTank nextRemainingFuel = this.physicEngine.computeFuel(nextShuttle);
-        nextShuttle.fuel = nextRemainingFuel;
-        final Position nextPosition = this.physicEngine.computePosition(nextShuttle);
-        nextShuttle.position = nextPosition;
-        final Speed nextSpeed = this.physicEngine.computeSpeed(nextShuttle);
-        nextShuttle.speed = nextSpeed;
-        final Status nextStatus = this.physicEngine.computeStatus(nextShuttle, surface);
-        nextShuttle.status = nextStatus;
+
+        nextShuttle.control = this.physicEngine.computeControl(nextShuttle, desiredControls);
+        nextShuttle.fuel = this.physicEngine.computeFuel(nextShuttle);
+        nextShuttle.position = this.physicEngine.computePosition(nextShuttle);
+        nextShuttle.speed = this.physicEngine.computeSpeed(nextShuttle);
+        nextShuttle.status = this.physicEngine.computeStatus(nextShuttle, surface);
 
         return nextShuttle;
     }
