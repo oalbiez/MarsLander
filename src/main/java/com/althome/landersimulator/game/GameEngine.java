@@ -27,29 +27,31 @@ public class GameEngine {
         this.physicEngine = new PhysicEngine();
     }
 
-    public Shuttle computeNextState(final Surface surface, final Shuttle shuttle, DesiredControls desiredControls ) {
-
-        if ( shuttle.status == Status.CRASHED ) return shuttle;
-
-        Shuttle nextShuttle = shuttle.duplicate();
-
-        nextShuttle.control = this.physicEngine.computeControl(nextShuttle, desiredControls);
-        nextShuttle.fuel = this.physicEngine.computeFuel(nextShuttle);
-        nextShuttle.position = this.physicEngine.computePosition(nextShuttle);
-        nextShuttle.speed = this.physicEngine.computeSpeed(nextShuttle);
-        nextShuttle.status = this.physicEngine.computeStatus(nextShuttle, surface);
-
-        return nextShuttle;
+    public Shuttle computeNextState(final Surface surface, final Shuttle shuttle, final DesiredControls desiredControls, boolean duplicate) {
+        Shuttle s = shuttle;
+        if ( duplicate ) {
+            s = shuttle.duplicate();
+        }
+        return runSequence(s, surface, desiredControls);
     }
 
-
-    public Shuttle computeFinalState(final Surface surface, final Shuttle shuttle, final DesiredControlsSequence sequence) {
+    public Shuttle computeFinalState(final Surface surface, final Shuttle shuttle, final DesiredControlsSequence sequence, boolean duplicate) {
         Shuttle currentShuttle = shuttle;
         while ( sequence.hasNext() ) {
             final DesiredControls nextAction = sequence.next();
-            currentShuttle = computeNextState(surface, currentShuttle, nextAction);
+            currentShuttle = computeNextState(surface, currentShuttle, nextAction, duplicate);
         }
         return currentShuttle;
+    }
+
+    private Shuttle runSequence(Shuttle shuttle, Surface surface, DesiredControls desiredControls) {
+        if ( shuttle.status == Status.CRASHED ) return shuttle;
+        shuttle.control = this.physicEngine.computeControl(shuttle, desiredControls);
+        shuttle.fuel = this.physicEngine.computeFuel(shuttle);
+        shuttle.position = this.physicEngine.computePosition(shuttle);
+        shuttle.speed = this.physicEngine.computeSpeed(shuttle);
+        shuttle.status = this.physicEngine.computeStatus(shuttle, surface);
+        return shuttle;
     }
     
     

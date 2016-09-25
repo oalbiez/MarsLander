@@ -20,16 +20,13 @@ public class Shuttle {
     public Status status;
     
     public Shuttle(Position position, Speed speed, ControlPanel control, FuelTank fuel, Status status) {
-        this.position = position.duplicate();
-        this.speed = speed.duplicate();
-        this.control = control.duplicate();
-        this.fuel = fuel.duplicate();
+        this.position = position;
+        this.speed = speed;
+        this.control = control;
+        this.fuel = fuel;
         this.status = status;
     }
-    
-    public void updateControl(ControlPanel newControl) {
 
-    }
     
     @Override
     public String toString() {
@@ -42,7 +39,7 @@ public class Shuttle {
     }
     
     public Shuttle duplicate() {
-        return new Shuttle(position, speed, control, fuel, status);
+        return new Shuttle(position.duplicate(), speed.duplicate(), control.duplicate(), fuel.duplicate(), status);
     }
     
 }

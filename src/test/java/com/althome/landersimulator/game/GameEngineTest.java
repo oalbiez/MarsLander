@@ -83,7 +83,7 @@ public class GameEngineTest {
 
         seq.fillWith(4, ctrl);
 
-        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq);
+        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, true);
 
         assertEquals(2500, ship5.position.x, PRECISION);
         assertEquals(2670, ship5.position.y, PRECISION);
@@ -104,7 +104,7 @@ public class GameEngineTest {
 
         seq.fillWith(4, ctrl);
 
-        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq);
+        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, true);
 
         assertEquals(ship5.position.x, 2494, PRECISION);
         assertEquals(ship5.position.y, 2684, PRECISION);
@@ -125,7 +125,7 @@ public class GameEngineTest {
 
         seq.fillWith(4, ctrl);
 
-        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq);
+        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, true);
 
         assertEquals(ship5.position.x, 6100, PRECISION);
         assertEquals(ship5.position.y, 2770, PRECISION);
@@ -147,7 +147,7 @@ public class GameEngineTest {
 
         seq.fillWith(4, ctrl);
 
-        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq);
+        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, true);
 
         assertEquals(ship5.position.x, 6088, PRECISION);
         assertEquals(ship5.position.y, 2778, PRECISION);
@@ -168,7 +168,7 @@ public class GameEngineTest {
 
         seq.fillWith(4, ctrl);
 
-        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq);
+        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, true);
 
         assertEquals(ship5.position.x, 6085, PRECISION);
         assertEquals(ship5.position.y, 2770, PRECISION);
@@ -188,9 +188,7 @@ public class GameEngineTest {
 
         final DesiredControlsSequence seq = buildVariableSequence();
 
-        Shuttle ship11 = engine.computeFinalState(ground, ship1, seq);
-
-        System.out.println(ship11);
+        Shuttle ship11 = engine.computeFinalState(ground, ship1, seq, true);
 
         assertEquals(ship11.position.x, 2464, PRECISION);
         assertEquals(ship11.position.y, 2607, PRECISION);
@@ -211,10 +209,7 @@ public class GameEngineTest {
         final DesiredControlsSequence seq = new DesiredControlsSequence();
         seq.fillWith(100, ctrl);
 
-        Shuttle ship2 = engine.computeFinalState(ground, ship1, seq);
-
-        System.out.println(ship2);
-
+        Shuttle ship2 = engine.computeFinalState(ground, ship1, seq, true);
     }
 
 }
