@@ -6,6 +6,9 @@ package com.althome.landersimulator;
  * and open the template in the editor.
  */
 
+import com.althome.landersimulator.input.DesiredControlsSequence;
+import com.althome.landersimulator.physic.ControlsConstraints;
+
 /**
  *
  * @author Arnaud
@@ -13,7 +16,8 @@ package com.althome.landersimulator;
 public class App {
     public static void main(String args[]) {
 
-
+        DesiredControlsSequence seq = DesiredControlsSequence.generateRandom(5, new ControlsConstraints());
+        System.out.println(seq);
 
     }
 

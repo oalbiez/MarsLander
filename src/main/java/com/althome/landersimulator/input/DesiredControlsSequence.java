@@ -1,5 +1,7 @@
 package com.althome.landersimulator.input;
 
+import com.althome.landersimulator.physic.ControlsConstraints;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,6 +16,11 @@ public class DesiredControlsSequence implements Iterator<DesiredControls> {
     public DesiredControlsSequence() {
         this.currentIndex = -1;
         this.sequence = new ArrayList<>();
+    }
+
+    public DesiredControlsSequence(int size) {
+        this.currentIndex = -1;
+        this.sequence = new ArrayList<>(size);
     }
 
     public DesiredControlsSequence(int[] thrusterInput, int[] tiltInput) {
@@ -42,6 +49,25 @@ public class DesiredControlsSequence implements Iterator<DesiredControls> {
     public void reset() {
         this.sequence.clear();
         this.currentIndex = -1;
+    }
+
+    public static DesiredControlsSequence generateRandom(int size, final ControlsConstraints cstr) {
+        DesiredControlsSequence seq = new DesiredControlsSequence(size);
+        for (int i=0; i<size; i++) {
+            seq.addLastDesiredControls(DesiredControls.generateRandom(cstr));
+        }
+        return seq;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder seqPrint = new StringBuilder();
+        for (int i=0; i<this.sequence.size(); i++) {
+            seqPrint.append("(")
+                    .append(this.sequence.get(i))
+                    .append(") \n");
+        }
+        return seqPrint.toString();
     }
 
     @Override

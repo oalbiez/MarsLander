@@ -6,6 +6,7 @@
 package com.althome.landersimulator.utils;
 
 import java.text.DecimalFormat;
+import java.util.Random;
 
 /**
  *
@@ -17,6 +18,15 @@ public class Utils {
 
     public static final DecimalFormat FMT_0_DEC = new DecimalFormat("#0");
 
+    public static final Random rnd = new Random(66);
+
+    public static int nextInt(int min, int max) {
+        return rnd.nextInt(max-min+1) + min ;
+    }
+
+    public static int nextInt(int min, int max, int FACTOR) {
+        return (rnd.nextInt(max-min+1) + min) * FACTOR;
+    }
 
 
 }
