@@ -168,7 +168,7 @@ public class GameEngineTest {
 
         seq.fillWith(4, ctrl);
 
-        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, false);
+        Shuttle ship5 = engine.computeFinalState(ground, ship1, seq, false); // ship5 == ship1
 
         assertEquals(ship5.position.x, 6085, PRECISION);
         assertEquals(ship5.position.y, 2770, PRECISION);

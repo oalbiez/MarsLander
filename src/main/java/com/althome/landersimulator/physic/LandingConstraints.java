@@ -3,7 +3,7 @@ package com.althome.landersimulator.physic;
 /**
  * Created by Arnaud on 17/09/2016.
  */
-class LandingConstraints {
+public class LandingConstraints {
 
 
     private final double vSpeedLandMax;
@@ -23,11 +23,11 @@ class LandingConstraints {
         this.tiltLandMax = tiltLandMax;
     }
 
-    double getvSpeedLandMax() {
+    public double getvSpeedLandMax() {
         return vSpeedLandMax;
     }
 
-    double gethSpeedLandMax() {
+    public double gethSpeedLandMax() {
         return hSpeedLandMax;
     }
 

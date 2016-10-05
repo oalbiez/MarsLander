@@ -90,6 +90,16 @@ public class BitMatrixSurface implements Surface {
     }
 
     @Override
+    public int horizontalDistanceFromMiddleOfTheLandingZone(final Position position) {
+        return (int) Math.abs(this.flatZoneXmid - position.x);
+    }
+
+    @Override
+    public int verticalDistanceFromTheLandingZone(Position position) {
+        return (int) Math.abs(this.flatZoneY - position.y);
+    }
+
+    @Override
     public String toString() {
         StringBuilder dots = new StringBuilder();
         for (int y=yLength-1; y>-1; y-=150) {

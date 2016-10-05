@@ -45,7 +45,7 @@ public class GameEngine {
     }
 
     private Shuttle runSequence(Shuttle shuttle, Surface surface, DesiredControls desiredControls) {
-        if ( shuttle.status == Status.CRASHED ) return shuttle;
+        if ( shuttle.status == Status.CRASHED || shuttle.status == Status.LANDED ) return shuttle;
         shuttle.control = this.physicEngine.computeControl(shuttle, desiredControls);
         shuttle.fuel = this.physicEngine.computeFuel(shuttle);
         shuttle.position = this.physicEngine.computePosition(shuttle);

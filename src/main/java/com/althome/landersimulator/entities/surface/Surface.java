@@ -19,6 +19,10 @@ public interface Surface {
     
     boolean isOnTheLandingZone(final Position position);
 
+    int horizontalDistanceFromMiddleOfTheLandingZone(final Position position);
+
+    int verticalDistanceFromTheLandingZone(final Position position);
+
     String toString();
 
 }
