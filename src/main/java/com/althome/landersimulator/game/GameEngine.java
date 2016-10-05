@@ -37,8 +37,8 @@ public class GameEngine {
 
     public Shuttle computeFinalState(final Surface surface, final Shuttle shuttle, final DesiredControlsSequence sequence, boolean duplicate) {
         Shuttle currentShuttle = shuttle;
-        while ( sequence.hasNext() ) {
-            final DesiredControls nextAction = sequence.next();
+        for (int i=0; i<sequence.getSequence().size(); i++) {
+            final DesiredControls nextAction = sequence.getSequence().get(i);
             currentShuttle = computeNextState(surface, currentShuttle, nextAction, duplicate);
         }
         return currentShuttle;
